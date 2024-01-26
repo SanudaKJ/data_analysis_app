@@ -1,3 +1,5 @@
+import 'package:data_analysis_app/model/expence.dart';
+import 'package:data_analysis_app/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
 
 class Expences extends StatefulWidget {
@@ -8,6 +10,25 @@ class Expences extends StatefulWidget {
 }
 
 class _ExpencesState extends State<Expences> {
+  //Expence List
+  final List<ExpenceModel> _expenceList = [
+    ExpenceModel(
+        title: "Rugby",
+        amount: 12.5,
+        date: DateTime.now(),
+        catagory: Catagory.leasure),
+    ExpenceModel(
+        title: "Presentation",
+        amount: 15.8,
+        date: DateTime.now(),
+        catagory: Catagory.work),
+    ExpenceModel(
+        title: "Cricket",
+        amount: 41.8,
+        date: DateTime.now(),
+        catagory: Catagory.leasure)
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +38,7 @@ class _ExpencesState extends State<Expences> {
         backgroundColor: Colors.green,
         actions: [
           Container(
+            width: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               color: Colors.lightGreen,
@@ -26,6 +48,11 @@ class _ExpencesState extends State<Expences> {
               icon: const Icon(Icons.add),
             ),
           )
+        ],
+      ),
+      body:  Column(
+        children: [
+          ExpenceList(expenceList: _expenceList ,),
         ],
       ),
     );

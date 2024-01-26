@@ -1,5 +1,7 @@
 import 'package:uuid/uuid.dart';
-final uuid = const Uuid().v4();// uuid is used to generate unique id for each expence
+
+final uuid =
+    const Uuid().v4(); // uuid is used to generate unique id for each expence
 
 enum Catagory {
   food,
