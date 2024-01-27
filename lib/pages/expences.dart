@@ -16,7 +16,7 @@ class _ExpencesState extends State<Expences> {
         title: "Rugby",
         amount: 12.5,
         date: DateTime.now(),
-        catagory: Catagory.leasure),
+        catagory: Catagory.food),
     ExpenceModel(
         title: "Presentation",
         amount: 15.8,
@@ -26,7 +26,7 @@ class _ExpencesState extends State<Expences> {
         title: "Cricket",
         amount: 41.8,
         date: DateTime.now(),
-        catagory: Catagory.leasure)
+        catagory: Catagory.tarvel)
   ];
 
   @override
@@ -35,13 +35,13 @@ class _ExpencesState extends State<Expences> {
       appBar: AppBar(
         elevation: 20, // Shadow of the AppBar (20 is default)
         title: const Text('Expences Master'),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: Colors.lightGreen,
         actions: [
           Container(
             width: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.orange,
+              color: Colors.green,
             ),
             child: IconButton(
               onPressed: () {},
@@ -50,9 +50,11 @@ class _ExpencesState extends State<Expences> {
           )
         ],
       ),
-      body:  Column(
+      body: Column(
         children: [
-          ExpenceList(expenceList: _expenceList ,),
+          ExpenceList(
+            expenceList: _expenceList,
+          ),
         ],
       ),
     );

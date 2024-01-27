@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 final uuid =
     const Uuid().v4(); // uuid is used to generate unique id for each expence
+
+final formattedData = DateFormat.yMd(); // date format (year/month/day)
 
 enum Catagory {
   food,
@@ -9,6 +13,13 @@ enum Catagory {
   leasure,
   work
 } // enum for catagory (enum is a special type of class in dart)
+
+ final CatagoryIcons = {
+  Catagory.food: Icons.lunch_dining,
+  Catagory.leasure: Icons.sports_score,
+  Catagory.tarvel: Icons.flight,
+  Catagory.work: Icons.work,
+};
 
 class ExpenceModel {
   ExpenceModel({
@@ -24,4 +35,9 @@ class ExpenceModel {
   final double amount;
   final DateTime date;
   final Catagory catagory;
+
+  String get getformatDate {
+    // getter for date
+    return formattedData.format(date);
+  }
 }
