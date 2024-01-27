@@ -35,13 +35,13 @@ class _ExpencesState extends State<Expences> {
       appBar: AppBar(
         elevation: 20, // Shadow of the AppBar (20 is default)
         title: const Text('Expences Master'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.orangeAccent,
         actions: [
           Container(
             width: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.lightGreen,
+              color: Colors.orange,
             ),
             child: IconButton(
               onPressed: () {},
