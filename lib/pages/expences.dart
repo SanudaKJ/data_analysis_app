@@ -1,4 +1,5 @@
 import 'package:data_analysis_app/model/expence.dart';
+import 'package:data_analysis_app/widgets/add_new_expence.dart';
 import 'package:data_analysis_app/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,14 @@ class _ExpencesState extends State<Expences> {
         catagory: Catagory.tarvel)
   ];
 
+  void _openAddExpenceOverLay() { // function to open the bottom sheet (overlay)
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return const AddNewExpence(); // AddNewExpence is a widget
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +53,7 @@ class _ExpencesState extends State<Expences> {
               color: Colors.green,
             ),
             child: IconButton(
-              onPressed: () {},
+              onPressed: _openAddExpenceOverLay,
               icon: const Icon(Icons.add),
             ),
           )
