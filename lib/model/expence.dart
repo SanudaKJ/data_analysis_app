@@ -14,7 +14,7 @@ enum Catagory {
   work
 } // enum for catagory (enum is a special type of class in dart)
 
- final CatagoryIcons = {
+ final CatagoryIcons = { // map for catagory icons    
   Catagory.food: Icons.lunch_dining,
   Catagory.leasure: Icons.sports_score,
   Catagory.tarvel: Icons.flight,
