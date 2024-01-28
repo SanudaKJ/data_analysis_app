@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
-import 'package:flutter/material.dart';
 import 'package:data_analysis_app/model/expence.dart';
+import 'package:flutter/material.dart';
+// import 'package:data_analysis_app/model/expence.dart';
 
 class AddNewExpence extends StatefulWidget {
   const AddNewExpence({super.key});
@@ -11,10 +10,68 @@ class AddNewExpence extends StatefulWidget {
 }
 
 class _AddNewExpenceState extends State<AddNewExpence> {
-  final _titleController = TextEditingController();
-  final _amountController = TextEditingController();
+  final _titleController =
+      TextEditingController(); // controller is used to get the value of the text field
+  final _amountController =
+      TextEditingController(); // controller is used to get the value of the text field
 
   Catagory _selectCatagory = Catagory.food; // default catagory is food
+
+  final DateTime initialDate = DateTime.now(); // initial date is today
+  final DateTime firstDate = DateTime(
+      DateTime.now().year - 5,
+      DateTime.now().month,
+      DateTime.now().day); // first date is 5 years before today
+  final DateTime lastDate = DateTime(
+      DateTime.now().year + 5,
+      DateTime.now().month,
+      DateTime.now().day); // last date is 5 years after today
+
+  DateTime _selectedDate = DateTime.now(); // default date is today
+
+  Future<void> _openDateModel() async {
+    // open the date picker
+    try {
+      final pickedDate = await showDatePicker(
+          // show the date picker
+          context: context,
+          initialDate: initialDate,
+          firstDate: firstDate,
+          lastDate: lastDate);
+      setState(() {
+        _selectedDate = pickedDate!;
+      });
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+  }
+
+  void _hadleFormSubmit() {
+    // handle the form submit
+    final userAmount = double.parse(_amountController.text.trim());
+
+    if (_titleController.text.trim().isEmpty || userAmount <= 0 ) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Enter valid data'),
+            content: const Text('Please enter valid title and amount'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      print("save the data");
+    }
+  }
 
   @override
   void dispose() {
@@ -43,9 +100,10 @@ class _AddNewExpenceState extends State<AddNewExpence> {
           ),
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: _amountController,
+                  decoration: const InputDecoration(
                     hintText: 'Enter Amount',
                     label: Text('Amount'),
                   ),
@@ -58,9 +116,9 @@ class _AddNewExpenceState extends State<AddNewExpence> {
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.end, //date picker
                 children: [
-                  const Text('2024/01/28'),
+                  Text(formattedData.format(_selectedDate)),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: _openDateModel, // open the date picker
                       icon: const Icon(Icons.date_range_outlined))
                 ],
               ))
@@ -93,7 +151,10 @@ class _AddNewExpenceState extends State<AddNewExpence> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(
+                      context); // pop is used to remove the widget from the widget tree(removes the widget from the screen)
+                },
                 style: const ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.red)),
                 child: const Text('Cancle'),
@@ -102,10 +163,9 @@ class _AddNewExpenceState extends State<AddNewExpence> {
                 width: 50,
               ),
               ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(Colors.green[700])),
+                onPressed: _hadleFormSubmit,
+                style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.green)),
                 child: const Text('Save'),
               )
             ],
