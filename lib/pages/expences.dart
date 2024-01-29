@@ -2,6 +2,7 @@ import 'package:data_analysis_app/model/expence.dart';
 import 'package:data_analysis_app/widgets/add_new_expence.dart';
 import 'package:data_analysis_app/widgets/expence_list.dart';
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 class Expences extends StatefulWidget {
   const Expences({super.key});
@@ -29,9 +30,17 @@ class _ExpencesState extends State<Expences> {
         date: DateTime.now(),
         catagory: Catagory.tarvel)
   ];
+  Map<String, double> dataMap = {
+    "Food": 0,
+    "Leasure": 0,
+    "Travel": 0,
+    "Work": 0,
+  };
+
   void onAddExpence(ExpenceModel expence) {
     setState(() {
       _expenceList.add(expence);
+      calCatagoryValues();
     });
   }
 
@@ -51,6 +60,7 @@ class _ExpencesState extends State<Expences> {
     final int removingIndex = _expenceList.indexOf(expence);
     setState(() {
       _expenceList.remove(expence);
+      calCatagoryValues();
     });
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -60,9 +70,57 @@ class _ExpencesState extends State<Expences> {
           onPressed: () {
             setState(() {
               _expenceList.insert(removingIndex, deletingExpence);
+              calCatagoryValues();
             });
           }),
     ));
+  }
+
+  //Catagory Values for Pie Chart
+  double foodval = 0;
+  double leasureval = 0;
+  double travelval = 0;
+  double workval = 0;
+
+  void calCatagoryValues() {
+    double foodvalTotal = 0;
+    double leasurevalTotal = 0;
+    double travelvalTotal = 0;
+    double workvalTotal = 0;
+
+    for (final expence in _expenceList) {
+      if (expence.catagory == Catagory.food) {
+        foodvalTotal += expence.amount;
+      }
+      if (expence.catagory == Catagory.leasure) {
+        leasurevalTotal += expence.amount;
+      }
+      if (expence.catagory == Catagory.tarvel) {
+        travelvalTotal += expence.amount;
+      }
+      if (expence.catagory == Catagory.work) {
+        workvalTotal += expence.amount;
+      }
+    }
+    setState(() {
+      foodval = foodvalTotal;
+      leasureval = leasurevalTotal;
+      travelval = travelvalTotal;
+      workval = workvalTotal;
+    });
+
+    dataMap = {
+      "Food": foodval,
+      "Leasure": leasureval,
+      "Travel": travelval,
+      "Work": workval,
+    };
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    calCatagoryValues();
   }
 
   @override
@@ -71,13 +129,13 @@ class _ExpencesState extends State<Expences> {
       appBar: AppBar(
         elevation: 20, // Shadow of the AppBar (20 is default)
         title: const Text('Expences Master'),
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Colors.green,
         actions: [
           Container(
             width: 55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Colors.green,
+              color: Colors.lightGreen,
             ),
             child: IconButton(
               onPressed: _openAddExpenceOverLay,
@@ -88,6 +146,7 @@ class _ExpencesState extends State<Expences> {
       ),
       body: Column(
         children: [
+          PieChart(dataMap: dataMap),
           ExpenceList(
             expenceList: _expenceList,
             onDeleteExpence: onDeleteExpence,
