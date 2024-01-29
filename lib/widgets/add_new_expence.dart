@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 // import 'package:data_analysis_app/model/expence.dart';
 
 class AddNewExpence extends StatefulWidget {
-  const AddNewExpence({super.key});
+  final void Function(ExpenceModel expence) onAddExpence;
+  const AddNewExpence({super.key, required this.onAddExpence});
 
   @override
   State<AddNewExpence> createState() => _AddNewExpenceState();
@@ -50,7 +51,7 @@ class _AddNewExpenceState extends State<AddNewExpence> {
     // handle the form submit
     final userAmount = double.parse(_amountController.text.trim());
 
-    if (_titleController.text.trim().isEmpty || userAmount <= 0 ) {
+    if (_titleController.text.trim().isEmpty || userAmount <= 0) {
       showDialog(
         context: context,
         builder: (context) {
@@ -69,7 +70,14 @@ class _AddNewExpenceState extends State<AddNewExpence> {
         },
       );
     } else {
-      print("save the data");
+      ExpenceModel newExpence = ExpenceModel(
+          title: _titleController.text.trim(),
+          amount: userAmount,
+          date: _selectedDate,
+          catagory: _selectCatagory);
+
+      widget.onAddExpence(newExpence);
+      Navigator.pop(context);
     }
   }
 
