@@ -29,13 +29,40 @@ class _ExpencesState extends State<Expences> {
         date: DateTime.now(),
         catagory: Catagory.tarvel)
   ];
+  void onAddExpence(ExpenceModel expence) {
+    setState(() {
+      _expenceList.add(expence);
+    });
+  }
 
-  void _openAddExpenceOverLay() { // function to open the bottom sheet (overlay)
+  void _openAddExpenceOverLay() {
+    // function to open the bottom sheet (overlay)
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return const AddNewExpence(); // AddNewExpence is a widget
+          return AddNewExpence(
+            onAddExpence: onAddExpence,
+          ); // AddNewExpence is a widget
         });
+  }
+
+  void onDeleteExpence(ExpenceModel expence) {
+    ExpenceModel deletingExpence = expence;
+    final int removingIndex = _expenceList.indexOf(expence);
+    setState(() {
+      _expenceList.remove(expence);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text("Delete Successful"),
+      action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            setState(() {
+              _expenceList.insert(removingIndex, deletingExpence);
+            });
+          }),
+    ));
   }
 
   @override
@@ -63,6 +90,7 @@ class _ExpencesState extends State<Expences> {
         children: [
           ExpenceList(
             expenceList: _expenceList,
+            onDeleteExpence: onDeleteExpence,
           ),
         ],
       ),
